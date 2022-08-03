@@ -20,7 +20,9 @@ class WebRTCCamera extends HTMLElement {
     }
 
     set readyState(value) {
+        clearTimeout(this.stateIconVisibilityTimeoutId)
         const state = this.querySelector('.state');
+        state.style.display = 'block';
         switch (value) {
             case 'websocket':
                 state.icon = 'mdi:download-network-outline';
@@ -28,7 +30,6 @@ class WebRTCCamera extends HTMLElement {
             case 'mse':
                 state.icon = 'mdi:play-network-outline';
                 break;
-
             case 'webrtc-pending':  // init WebRTC
                 state.icon = 'mdi:lan-pending';
                 break;
@@ -45,6 +46,11 @@ class WebRTCCamera extends HTMLElement {
                 state.icon = 'mdi:webrtc';
                 break;
         }
+        // after a set timeout, hide the icon to reduce visual clutter on the
+        // camera feed
+        this.stateIconVisibilityTimeoutId = setTimeout(() => {
+            state.style.display = 'none';
+        }, 5000);
     }
 
     get isOpera() {
