@@ -46,11 +46,13 @@ class WebRTCCamera extends HTMLElement {
                 state.icon = 'mdi:webrtc';
                 break;
         }
-        // after a set timeout, hide the icon to reduce visual clutter on the
-        // camera feed
-        this.stateIconVisibilityTimeoutId = setTimeout(() => {
-            state.style.display = 'none';
-        }, 5000);
+        if (this.config.state_hide_ms) {
+            // after a set timeout, hide the icon to reduce visual clutter on the
+            // camera feed
+            this.stateIconVisibilityTimeoutId = setTimeout(() => {
+                state.style.display = 'none';
+            }, this.config.state_hide_ms);
+        }
     }
 
     get isOpera() {
